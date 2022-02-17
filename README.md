@@ -7,7 +7,7 @@ https://github.com/grafana/tempo/tree/main/example/docker-compose
 ```
 
 
-## Local Storage
+## Backend
 In this example all data is stored locally in the `tempo/tempo-data` folder. Local storage is fine for experimenting with Tempo
 or when using the single binary, but does not work in a distributed/microservices scenario.
 
@@ -35,31 +35,31 @@ tempo-local-easeagent-tempo-1        "/tempo -search.enab…"   tempo           
 ls tempo/tempo-data/
 ```
 
-3. Start test demo project
+## Start test demo project
 
-- Build test project
+1. Build test project
 ```
 git clone https://github.com/megaease/easeagent-test-demo.git
 
-cd ease-test-demo/spring-gateway
+cd ease-test-demo
 
 mvn clean package
 
 ```
-- Download Easeagent 
+2. Download Easeagent 
 ```
  wget https://github.com/megaease/easeagent/releases/latest/download/easeagent.jar
 ```
 
-- Start demo
+3. Start demo
 
 ```
-java -javaagent:easeagent.jar=agent.properties -Deaseagent.server.port=9902 -Deaseagent.name=demo-api -jar spring-gateway/gateway/target/gateway-service-*.jar
-java -javaagent:easeagent.jar=agent.properties -Deaseagent.server.port=9900 -Deaseagent.name=demo-employee -jar spring-gateway/employee/target/employee-*.jar
-java -javaagent:easeagent.jar=agent.properties -Deaseagent.server.port=9900 -Deaseagent.name=demo-consumer -jar spring-gateway/consumer/target/consumer-*.jar
+java -javaagent:easeagent.jar=agent-tempo.properties -Deaseagent.server.port=9902 -Deaseagent.name=demo-api -jar spring-gateway/gateway/target/gateway-service-*.jar
+java -javaagent:easeagent.jar=agent-tempo.properties -Deaseagent.server.port=9900 -Deaseagent.name=demo-employee -jar spring-gateway/employee/target/employee-*.jar
+java -javaagent:easeagent.jar=agent-tempo.properties -Deaseagent.server.port=9901 -Deaseagent.name=demo-consumer -jar spring-gateway/consumer/target/consumer-*.jar
 ```
 
-- Access
+4. Generate tracing data
 ```
 curl -v http://127.0.0.1:18080/employee/message
 
@@ -67,7 +67,9 @@ curl -v http://127.0.0.1:18080/consumer/message
 
 ```
 
-4. Navigate to [Grafana](http://localhost:3000/explore) and query tracing and metric data.
+## Visualization
+
+Navigate to [Grafana](http://localhost:3000/explore) and query tracing and metric data.
 
 - Tracing
 ![image](./doc/images/tracing.png)
@@ -77,7 +79,7 @@ curl -v http://127.0.0.1:18080/consumer/message
 
 You can also access metric data through [Prometheus](http://localhost:9090)
 
-5. To stop the setup use -
+## To stop the setup use -
 
 ```console
 docker-compose down -v

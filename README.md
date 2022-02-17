@@ -1,4 +1,4 @@
-## Propose
+## Purpose
 Provide Easeagent users with an open source backend integration that can be delivered quickly, using Grafana + Tempo + Prometheus for the backend.
 
 Reference to the following links:

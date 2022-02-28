@@ -54,9 +54,9 @@ mvn clean package
 3. Start demo
 
 ```
-java -javaagent:easeagent.jar=agent-tempo.properties -Deaseagent.server.port=9902 -Deaseagent.name=demo-api -jar spring-gateway/gateway/target/gateway-service-*.jar
-java -javaagent:easeagent.jar=agent-tempo.properties -Deaseagent.server.port=9900 -Deaseagent.name=demo-employee -jar spring-gateway/employee/target/employee-*.jar
-java -javaagent:easeagent.jar=agent-tempo.properties -Deaseagent.server.port=9901 -Deaseagent.name=demo-consumer -jar spring-gateway/consumer/target/consumer-*.jar
+java -javaagent:easeagent.jar -Deaseagent.config.path=agent-tempo.properties -Deaseagent.server.port=9900 -Deaseagent.name=demo-employee -jar spring-gateway/employee/target/employee-*.jar &
+java -javaagent:easeagent.jar -Deaseagent.config.path=agent-tempo.properties -Deaseagent.server.port=9901 -Deaseagent.name=demo-consumer -jar spring-gateway/consumer/target/consumer-*.jar &
+java -javaagent:easeagent.jar -Deaseagent.config.path=agent-tempo.properties -Deaseagent.server.port=9902 -Deaseagent.name=demo-api -jar spring-gateway/gateway/target/gateway-service-*.jar &
 ```
 
 4. Generate tracing data

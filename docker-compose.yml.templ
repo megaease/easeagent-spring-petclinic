@@ -1,0 +1,145 @@
+version: '2.1'
+
+services:
+  config-server:
+    image: megaease/spring-petclinic-config-server
+    container_name: config-server
+    volumes:
+    - ${SCRIPTPATH}/spring-petclinic-microservices-config:/git-repo
+    environment:
+      - GIT_REPO=/git-repo
+      - SPRING_PROFILES_ACTIVE=native
+    mem_limit: 512M
+    ports:
+     - 8888:8888 
+
+  discovery-server:
+    image: megaease/spring-petclinic-discovery-server
+    container_name: discovery-server
+    mem_limit: 512M
+    depends_on:
+      - config-server
+    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    ports:
+     - 8761:8761
+
+  customers-service:
+    image: megaease/spring-petclinic-customers-service
+    container_name: customers-service
+    mem_limit: 1648M
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+     - config-server
+     - discovery-server
+    entrypoint: 
+    - "./dockerize"
+    - "-wait=tcp://discovery-server:8761"
+    - "-timeout=60s"
+    - "--"
+    - "java"
+    - "-javaagent:/easeagent-volume/easeagent-${VERSION}.jar" 
+    - "-Deaseagent.server.port=9900"
+    - "org.springframework.boot.loader.JarLauncher"
+    ports:
+    - 18081:18081
+
+  visits-service:
+    image: megaease/spring-petclinic-visits-service
+    container_name: visits-service
+    mem_limit: 1624M
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+     - config-server
+     - discovery-server
+    entrypoint: 
+    - "./dockerize"
+    - "-wait=tcp://discovery-server:8761"
+    - "-timeout=60s"
+    - "--"
+    - "java"
+    - "-javaagent:/easeagent-volume/easeagent-${VERSION}.jar" 
+    - "-Deaseagent.server.port=9900"
+    - "org.springframework.boot.loader.JarLauncher"
+    ports:
+     - 8082:8082
+
+  vets-service:
+    image: megaease/spring-petclinic-vets-service
+    container_name: vets-service
+    mem_limit: 1624M
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+     - config-server
+     - discovery-server
+    entrypoint: 
+    - "./dockerize"
+    - "-wait=tcp://discovery-server:8761"
+    - "-timeout=60s"
+    - "--"
+    - "java"
+    - "-javaagent:/easeagent-volume/easeagent-${VERSION}.jar" 
+    - "-Deaseagent.server.port=9900"
+    - "org.springframework.boot.loader.JarLauncher"
+    ports:
+     - 28083:8083 
+
+  api-gateway:
+    image: megaease/spring-petclinic-api-gateway
+    container_name: api-gateway
+    mem_limit: 1648M
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+     - config-server
+     - discovery-server
+    entrypoint: 
+    - "./dockerize"
+    - "-wait=tcp://discovery-server:8761"
+    - "-timeout=60s"
+    - "--"
+    - "java"
+    - "-javaagent:/easeagent-volume/easeagent-${VERSION}.jar" 
+    - "-Deaseagent.server.port=9900"
+    - "org.springframework.boot.loader.JarLauncher"
+    ports:
+     - 28080:8080
+
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    command: [ "-search.enabled=true", "-config.file=/etc/tempo.yaml" ]
+    depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]
+    volumes:
+      - ${SCRIPTPATH}/tempo/tempo-local.yaml:/etc/tempo.yaml
+      - ${SCRIPTPATH}/tempo/overrides.yaml:/etc/overrides.yaml
+      - ${SCRIPTPATH}/tempo/tempo-data:/tmp/tempo
+    ports:
+      - "3200"   # tempo
+      - "9411:9411"   # zipkin
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    command: [ "--config.file=/etc/prometheus.yaml" ]
+    depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]
+    volumes:
+      - ${SCRIPTPATH}/prometheus/prometheus.yaml:/etc/prometheus.yaml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:main   # track main as search is under active development
+    container_name: grafana
+    depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]
+    volumes:
+      - ${SCRIPTPATH}/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ${SCRIPTPATH}/grafana/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - "3000:3000"

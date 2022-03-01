@@ -26,7 +26,6 @@ services:
   customers-service:
     image: megaease/spring-petclinic-customers-service
     container_name: customers-service
-    mem_limit: 1648M
     volumes:
      - ${SCRIPTPATH}/easeagent:/easeagent-volume
     depends_on:
@@ -47,7 +46,6 @@ services:
   visits-service:
     image: megaease/spring-petclinic-visits-service
     container_name: visits-service
-    mem_limit: 1624M
     volumes:
      - ${SCRIPTPATH}/easeagent:/easeagent-volume
     depends_on:
@@ -68,7 +66,6 @@ services:
   vets-service:
     image: megaease/spring-petclinic-vets-service
     container_name: vets-service
-    mem_limit: 1624M
     volumes:
      - ${SCRIPTPATH}/easeagent:/easeagent-volume
     depends_on:
@@ -89,7 +86,6 @@ services:
   api-gateway:
     image: megaease/spring-petclinic-api-gateway
     container_name: api-gateway
-    mem_limit: 1648M
     volumes:
      - ${SCRIPTPATH}/easeagent:/easeagent-volume
     depends_on:

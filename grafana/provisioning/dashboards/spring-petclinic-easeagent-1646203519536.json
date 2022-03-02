@@ -135,7 +135,7 @@
           "exemplar": true,
           "expr": "increase(application_jvm_gc_times{resource=\"G1 Young Generation\"}[1m:30s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -227,7 +227,7 @@
           "exemplar": true,
           "expr": "increase((application_jvm_gc_total_collection_time{resource=\"G1 Young Generation\"})[1m:30s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -317,9 +317,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "sum by(job) (application_jvm_memory_bytes_used{resource=\"pools.G1-Eden-Space\"})",
+          "expr": "sum by(service) (application_jvm_memory_bytes_used{resource=\"pools.G1-Eden-Space\"})",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -409,9 +409,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "sum by(job) (application_jvm_memory_bytes_used{resource=\"pools.G1-Old-Gen\"})",
+          "expr": "sum by(service) (application_jvm_memory_bytes_used{resource=\"pools.G1-Old-Gen\"})",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -501,9 +501,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "sum by(job) (application_jvm_memory_bytes_used{resource=\"pools.G1-Survivor-Space\"})",
+          "expr": "sum by(service) (application_jvm_memory_bytes_used{resource=\"pools.G1-Survivor-Space\"})",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -593,9 +593,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "sum by(job) (application_jvm_memory_bytes_used{resource=\"pools.Metaspace\"})",
+          "expr": "sum by(service) (application_jvm_memory_bytes_used{resource=\"pools.Metaspace\"})",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -669,7 +669,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(sum by(url)(application_http_request_m1{job=\"api-gateway\"})[5m:30s])",
+          "expr": "avg_over_time(sum by(url)(application_http_request_m1{service=\"api-gateway\"})[5m:30s])",
           "interval": "",
           "legendFormat": "{{url}}",
           "refId": "A"
@@ -731,7 +731,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(avg by (url)(application_http_request_cnt{job=\"api-gateway\"})[5m:30s])",
+          "expr": "avg_over_time(avg by (url)(application_http_request_cnt{service=\"api-gateway\"})[5m:30s])",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -797,7 +797,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(sum by(url)(application_http_request_p99{job=\"api-gateway\"})[5m:30s])",
+          "expr": "avg_over_time(sum by(url)(application_http_request_p99{service=\"api-gateway\"})[5m:30s])",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -892,9 +892,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(avg by(job) (application_http_request_p99)[1m:1s])",
+          "expr": "avg_over_time(avg by(service) (application_http_request_p99)[1m:1s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -984,9 +984,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(avg by(job) (application_http_request_p95)[5m:30s])",
+          "expr": "avg_over_time(avg by(service) (application_http_request_p95)[5m:30s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -1076,9 +1076,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(avg by(job) (application_http_request_p50)[5m:30s])",
+          "expr": "avg_over_time(avg by(service) (application_http_request_p50)[5m:30s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -1168,9 +1168,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(sum by(job) (application_http_request_m1)[5m:30s])",
+          "expr": "avg_over_time(sum by(service) (application_http_request_m1)[5m:30s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -1260,9 +1260,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(sum by(job) (application_http_request_m5)[5m:30s])",
+          "expr": "avg_over_time(sum by(service) (application_http_request_m5)[5m:30s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -1352,9 +1352,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(sum by(job) (application_http_request_m15)[5m:30s])",
+          "expr": "avg_over_time(sum by(service) (application_http_request_m15)[5m:30s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -1444,9 +1444,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(avg by (job) (application_jdbc_statement_p99)[5m:30s])",
+          "expr": "avg_over_time(avg by (service) (application_jdbc_statement_p99)[5m:30s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -1536,9 +1536,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(avg by (job) (application_jdbc_statement_p50)[5m:30s])",
+          "expr": "avg_over_time(avg by (service) (application_jdbc_statement_p50)[5m:30s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -1628,9 +1628,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(sum by (job) (application_jdbc_statement_p50)[1m:1s])",
+          "expr": "avg_over_time(sum by (service) (application_jdbc_statement_p50)[1m:1s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -1720,9 +1720,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(sum by (job) (application_jdbc_statement_m1)[1m:1s])",
+          "expr": "avg_over_time(sum by (service) (application_jdbc_statement_m1)[1m:1s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -1812,9 +1812,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(sum by (job) (application_jdbc_statement_m5)[1m:1s])",
+          "expr": "avg_over_time(sum by (service) (application_jdbc_statement_m5)[1m:1s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],
@@ -1904,9 +1904,9 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(sum by (job) (application_jdbc_statement_m15)[15m:30s])",
+          "expr": "avg_over_time(sum by (service) (application_jdbc_statement_m15)[15m:30s])",
           "interval": "",
-          "legendFormat": "{{job}}",
+          "legendFormat": "{{service}}",
           "refId": "A"
         }
       ],

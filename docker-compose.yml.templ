@@ -37,7 +37,8 @@ services:
     - "-timeout=60s"
     - "--"
     - "java"
-    - "-javaagent:/easeagent-volume/easeagent-${VERSION}.jar" 
+    - "-javaagent:/easeagent-volume/downloaded/easeagent-${VERSION}.jar" 
+    - "-Deaseagent.config.path=/easeagent-volume/agent_customers-service.properties"
     - "-Deaseagent.server.port=9900"
     - "org.springframework.boot.loader.JarLauncher"
     ports:
@@ -57,7 +58,8 @@ services:
     - "-timeout=60s"
     - "--"
     - "java"
-    - "-javaagent:/easeagent-volume/easeagent-${VERSION}.jar" 
+    - "-javaagent:/easeagent-volume/downloaded/easeagent-${VERSION}.jar" 
+    - "-Deaseagent.config.path=/easeagent-volume/agent_visits-service.properties"
     - "-Deaseagent.server.port=9900"
     - "org.springframework.boot.loader.JarLauncher"
     ports:
@@ -77,7 +79,8 @@ services:
     - "-timeout=60s"
     - "--"
     - "java"
-    - "-javaagent:/easeagent-volume/easeagent-${VERSION}.jar" 
+    - "-javaagent:/easeagent-volume/downloaded/easeagent-${VERSION}.jar" 
+    - "-Deaseagent.config.path=/easeagent-volume/agent_vets-service.properties"
     - "-Deaseagent.server.port=9900"
     - "org.springframework.boot.loader.JarLauncher"
     ports:
@@ -97,7 +100,8 @@ services:
     - "-timeout=60s"
     - "--"
     - "java"
-    - "-javaagent:/easeagent-volume/easeagent-${VERSION}.jar" 
+    - "-javaagent:/easeagent-volume/downloaded/easeagent-${VERSION}.jar" 
+    - "-Deaseagent.config.path=/easeagent-volume/agent_api-gateway.properties"
     - "-Deaseagent.server.port=9900"
     - "org.springframework.boot.loader.JarLauncher"
     ports:

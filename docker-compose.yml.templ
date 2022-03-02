@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   config-server:
-    image: megaease/spring-petclinic-config-server
+    image: springcommunity/spring-petclinic-config-server
     container_name: config-server
     volumes:
     - ${SCRIPTPATH}/spring-petclinic-microservices-config:/git-repo
@@ -14,7 +14,7 @@ services:
      - 8888:8888 
 
   discovery-server:
-    image: megaease/spring-petclinic-discovery-server
+    image: springcommunity/spring-petclinic-discovery-server
     container_name: discovery-server
     mem_limit: 512M
     depends_on:
@@ -24,7 +24,7 @@ services:
      - 8761:8761
 
   customers-service:
-    image: megaease/spring-petclinic-customers-service
+    image: springcommunity/spring-petclinic-customers-service
     container_name: customers-service
     volumes:
      - ${SCRIPTPATH}/easeagent:/easeagent-volume
@@ -45,7 +45,7 @@ services:
     - 18081:18081
 
   visits-service:
-    image: megaease/spring-petclinic-visits-service
+    image: springcommunity/spring-petclinic-visits-service
     container_name: visits-service
     volumes:
      - ${SCRIPTPATH}/easeagent:/easeagent-volume
@@ -66,7 +66,7 @@ services:
      - 8082:8082
 
   vets-service:
-    image: megaease/spring-petclinic-vets-service
+    image: springcommunity/spring-petclinic-vets-service
     container_name: vets-service
     volumes:
      - ${SCRIPTPATH}/easeagent:/easeagent-volume
@@ -87,7 +87,7 @@ services:
      - 28083:8083 
 
   api-gateway:
-    image: megaease/spring-petclinic-api-gateway
+    image: springcommunity/spring-petclinic-api-gateway
     container_name: api-gateway
     volumes:
      - ${SCRIPTPATH}/easeagent:/easeagent-volume

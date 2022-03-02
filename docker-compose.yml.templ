@@ -132,7 +132,7 @@ services:
     depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]
     volumes:
       - ${SCRIPTPATH}/grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ${SCRIPTPATH}/grafana/grafana-datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml
+      - ${SCRIPTPATH}/grafana/provisioning:/etc/grafana/provisioning
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
       - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin

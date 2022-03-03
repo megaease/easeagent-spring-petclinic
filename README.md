@@ -8,7 +8,7 @@ A repository demonstrate how to leverage the EaseAgent to monitor java applicati
     - [Prerequisites](#prerequisites)
     - [Start the full stack](#start-the-full-stack)
     - [Stop the full stack](#stop-the-full-stack)
-    - [](#)
+    - [Visualization](#visualization)
   
 ## Purpose
 With the EaseAgent, the metrics of [spring-petclinic applications](https://github.com/spring-petclinic/spring-petclinic-microservices) like throughput, latency, and tracing data could be collected prometheus and tempo. The Grafana allows us to query, visualize, on and understand our metrics that we stored in tempo and prometheus.
@@ -48,4 +48,21 @@ After you finished test, using following command to destroy service
 ```
 ./spring-petclinic.sh stop
 ```
-### 
+### Visualization
+
+Just follow the step-by-step instructions, which will guide you get a good visualization
+
+- Step 1. In order to get a well visualization, you could wait a moment (about to five minutes) before the prometheus collect enough metric data. Open a browser (chrome, firefox or edge are good). Input the `localhost:3000` in the address bar and press enter to open grafana UI.
+
+- Step 2. Click the `search dashboards`, the first icon in the left menu bar. Choose the `spring-petclinic-easeagent` to open the dashboard we prepare for you.
+  
+- Step 3. You will get a visualization of metrics reported by the EaseAgent. In the dashboard we classified into two group. One is the JVM metrics which contain GC executing count ,GC executing time, and used memory capacity (Eden, Olden, etc...).  The second the important metrics of the application, including throughput, latency, in different measures, for example, http request throughput and latency, JDBC SQL throughput and latency.
+
+
+![metric](./doc/images/metric.png)
+
+
+- Step 4. If you want check the tracing data, you could click the `explore` in the left menu bar. Click the `Search - beta` to switch search mode. Click `search query` button in the right up corner, there is a list appeared contains many tracing. Chose one to click.
+
+![tracing](./doc/images/tracing.png)
+

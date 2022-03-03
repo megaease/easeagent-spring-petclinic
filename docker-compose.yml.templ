@@ -1,0 +1,155 @@
+version: '2.1'
+
+services:
+  config-server:
+    image: springcommunity/spring-petclinic-config-server
+    container_name: config-server
+    volumes:
+    - ${SCRIPTPATH}/spring-petclinic-microservices-config:/git-repo
+    environment:
+      - GIT_REPO=/git-repo
+      - SPRING_PROFILES_ACTIVE=native
+    mem_limit: 512M
+
+  discovery-server:
+    image: springcommunity/spring-petclinic-discovery-server
+    container_name: discovery-server
+    mem_limit: 512M
+    depends_on:
+      - config-server
+    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+
+  customers-service:
+    image: springcommunity/spring-petclinic-customers-service
+    container_name: customers-service
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+     - config-server
+     - discovery-server
+    entrypoint: 
+    - "./dockerize"
+    - "-wait=tcp://discovery-server:8761"
+    - "-timeout=60s"
+    - "--"
+    - "java"
+    - "-javaagent:/easeagent-volume/downloaded/easeagent-${VERSION}.jar" 
+    - "-Deaseagent.config.path=/easeagent-volume/agent_customers-service.properties"
+    - "-Deaseagent.server.port=9900"
+    - "-DSPRING_ZIPKIN_ENABLED=false"
+    - "-DSPRING_SLEUTH_ENABLED=false"
+    - "-DSPRING_SLEUTH_SAMPLER.PERCENTAGE=0"
+    - "org.springframework.boot.loader.JarLauncher"
+
+  visits-service:
+    image: springcommunity/spring-petclinic-visits-service
+    container_name: visits-service
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+     - config-server
+     - discovery-server
+    entrypoint: 
+    - "./dockerize"
+    - "-wait=tcp://discovery-server:8761"
+    - "-timeout=60s"
+    - "--"
+    - "java"
+    - "-javaagent:/easeagent-volume/downloaded/easeagent-${VERSION}.jar" 
+    - "-Deaseagent.config.path=/easeagent-volume/agent_visits-service.properties"
+    - "-Deaseagent.server.port=9900"
+    - "-DSPRING_ZIPKIN_ENABLED=false"
+    - "-DSPRING_SLEUTH_ENABLED=false"
+    - "-DSPRING_SLEUTH_SAMPLER.PERCENTAGE=0"
+    - "org.springframework.boot.loader.JarLauncher"
+
+  vets-service:
+    image: springcommunity/spring-petclinic-vets-service
+    container_name: vets-service
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+     - config-server
+     - discovery-server
+    entrypoint: 
+    - "./dockerize"
+    - "-wait=tcp://discovery-server:8761"
+    - "-timeout=60s"
+    - "--"
+    - "java"
+    - "-javaagent:/easeagent-volume/downloaded/easeagent-${VERSION}.jar" 
+    - "-Deaseagent.config.path=/easeagent-volume/agent_vets-service.properties"
+    - "-Deaseagent.server.port=9900"
+    - "-DSPRING_ZIPKIN_ENABLED=false"
+    - "-DSPRING_SLEUTH_ENABLED=false"
+    - "-DSPRING_SLEUTH_SAMPLER.PERCENTAGE=0"
+    - "org.springframework.boot.loader.JarLauncher"
+
+  api-gateway:
+    image: springcommunity/spring-petclinic-api-gateway
+    container_name: api-gateway
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+     - config-server
+     - discovery-server
+    entrypoint: 
+    - "./dockerize"
+    - "-wait=tcp://discovery-server:8761"
+    - "-timeout=60s"
+    - "--"
+    - "java"
+    - "-javaagent:/easeagent-volume/downloaded/easeagent-${VERSION}.jar" 
+    - "-Deaseagent.config.path=/easeagent-volume/agent_api-gateway.properties"
+    - "-Deaseagent.log.conf=/easeagent-volume/easeagent-log4j2.xml"
+    - "-Deaseagent.server.port=9900"
+    - "-DSPRING_ZIPKIN_ENABLED=false"
+    - "-DSPRING_SLEUTH_ENABLED=false"
+    - "-DSPRING_SLEUTH_SAMPLER.PERCENTAGE=0"
+    - "org.springframework.boot.loader.JarLauncher"
+
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    command: [ "-search.enabled=true", "-config.file=/etc/tempo.yaml" ]
+    depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]
+    volumes:
+      - ${SCRIPTPATH}/tempo/tempo-local.yaml:/etc/tempo.yaml
+      - ${SCRIPTPATH}/tempo/overrides.yaml:/etc/overrides.yaml
+      - ${SCRIPTPATH}/tempo/tempo-data:/tmp/tempo
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    command: [ "--config.file=/etc/prometheus.yaml" ]
+    depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]
+    volumes:
+      - ${SCRIPTPATH}/prometheus/prometheus.yaml:/etc/prometheus.yaml
+
+  grafana:
+    image: grafana/grafana:main   # track main as search is under active development
+    container_name: grafana
+    depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]
+    volumes:
+      - ${SCRIPTPATH}/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ${SCRIPTPATH}/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - "3000:3000"
+
+  loads:
+    image: nicolaka/netshoot
+    container_name: loads
+    mem_limit: 128M
+    depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]
+    volumes:
+      - ${SCRIPTPATH}/easeagent/loads.sh:/opt/easeagent/loads.sh
+    entrypoint: 
+    - "/bin/bash"
+    - "-c"
+    - "/opt/easeagent/loads.sh"
+ 
+

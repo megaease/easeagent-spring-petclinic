@@ -29,7 +29,8 @@ function prepare() {
 function start() {
   prepare
   generate_specs
-  docker-compose -f ${DOCKERCOMPOSEFILE} up
+  docker-compose -f ${DOCKERCOMPOSEFILE} up -d
+  echo "The stack was provisioned successfully."
 }
 
 function stop() {

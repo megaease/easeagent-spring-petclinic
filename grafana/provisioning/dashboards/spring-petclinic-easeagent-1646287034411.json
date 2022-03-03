@@ -650,8 +650,7 @@
       },
       "id": 24,
       "options": {
-        "displayMode": "gradient",
-        "orientation": "horizontal",
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -659,7 +658,8 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
       },
       "pluginVersion": "8.5.0-53474pre",
       "targets": [
@@ -669,79 +669,14 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(sum by(url)(application_http_request_m1{service=\"api-gateway\"})[5m:30s])",
+          "expr": "increase(avg by(url)(application_http_request_cnt)[1m:1m])",
           "interval": "",
           "legendFormat": "{{url}}",
           "refId": "A"
         }
       ],
-      "title": "Throughput for services",
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "PBFA97CFB590B2093"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": []
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 8,
-        "x": 8,
-        "y": 20
-      },
-      "id": 22,
-      "options": {
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "pieType": "pie",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "exemplar": true,
-          "expr": "avg_over_time(avg by (url)(application_http_request_cnt{service=\"api-gateway\"})[5m:30s])",
-          "format": "time_series",
-          "instant": false,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{url}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Total accessing count for services",
-      "type": "piechart"
+      "title": "Throughput for services (Request per minutes)",
+      "type": "gauge"
     },
     {
       "datasource": {
@@ -773,7 +708,7 @@
       "gridPos": {
         "h": 10,
         "w": 8,
-        "x": 16,
+        "x": 8,
         "y": 20
       },
       "id": 25,
@@ -797,7 +732,7 @@
             "uid": "PBFA97CFB590B2093"
           },
           "exemplar": true,
-          "expr": "avg_over_time(sum by(url)(application_http_request_p99{service=\"api-gateway\"})[5m:30s])",
+          "expr": "avg_over_time(avg by(url)(application_http_request_p99)[5m:30s])",
           "instant": false,
           "interval": "",
           "intervalFactor": 1,
@@ -805,8 +740,76 @@
           "refId": "A"
         }
       ],
-      "title": "P99 for services",
+      "title": "Lentency for API (P99)",
       "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 16,
+        "y": 20
+      },
+      "id": 22,
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "exemplar": true,
+          "expr": "avg_over_time(sum by (service)(application_http_request_cnt)[5m:15s])",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "{{service}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Total accessing count for services",
+      "type": "piechart"
     },
     {
       "datasource": {

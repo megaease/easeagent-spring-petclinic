@@ -1,86 +1,51 @@
+# EaseAgent-Spring-PetClinic
+
+A repository demonstrate how to leverage the EaseAgent to monitor java applications.
+
+- [EaseAgent-Spring-PetClinic](#easeagent-spring-petclinic)
+  - [Purpose](#purpose)
+  - [Quick Start](#quick-start)
+    - [Prerequisites](#prerequisites)
+    - [Start the full stack](#start-the-full-stack)
+    - [Stop the full stack](#stop-the-full-stack)
+    - [](#)
+  
 ## Purpose
-Provide Easeagent users with an open source backend integration that can be delivered quickly, using Grafana + Tempo + Prometheus for the backend.
+With the EaseAgent, the metrics of [spring-petclinic applications](https://github.com/spring-petclinic/spring-petclinic-microservices) like throughput, latency, and tracing data could be collected prometheus and tempo. The Grafana allows us to query, visualize, on and understand our metrics that we stored in tempo and prometheus.
 
-Reference to the following links:
+## Quick Start
+
+### Prerequisites
+
+- Make sure you have installed the docker, docker-compose in you environment.
+- Make sure your docker version is higher than v19.+
+- Make sure your docker-compose version is higher than v2.+
+
+### Start the full stack
+
+We leverage the docker-compose to provision the full stack service, services include:
+- spring-petclinic services:
+  -  `config-server`, `discovery-server`, `customers-service`, `vets-service`, `visits-service`, `api-gateway`
+- `tempo` service which is dedicated to collecting the tracing data
+- `prometheus` service which is dedicated scrape the metrics of the spring-petclinic services
+- `grafana` service which is dedicated to visualize the metrics and tracing data.
+- `loads` service which is dedicated to produce loads to all spring-petclinic services
+
+
+> All images in the stacks are pulled from the docker official registry. You should make sure you can pull images from it. All images are official image. **WE HAVE NOT CHANGE ANY THING OF THEM**
+
+Provisioning full stack command is:
 ```
-https://github.com/grafana/tempo/tree/main/example/docker-compose
-```
-
-
-## Backend
-In this example all data is stored locally in the `tempo/tempo-data` folder. Local storage is fine for experimenting with Tempo
-or when using the single binary, but does not work in a distributed/microservices scenario.
-
-1. First start up the local stack.
-
-```console
-docker-compose up -d
-```
-
-At this point, the following containers should be spun up -
-
-```console
-docker-compose ps
-```
-```
-NAME                                 COMMAND                  SERVICE             STATUS              PORTS
-tempo-local-easeagent-grafana-1      "/run.sh"                grafana             running             0.0.0.0:3000->3000/tcp
-tempo-local-easeagent-prometheus-1   "/bin/prometheus --c…"   prometheus          running             0.0.0.0:9090->9090/tcp
-tempo-local-easeagent-tempo-1        "/tempo -search.enab…"   tempo               running             0.0.0.0:51992->3200/tcp, 0.0.0.0:9411->9411/tcp
+./spring-petclinic.sh start
 ```
 
-2. If you're interested you can see the wal/blocks as they are being created.
+> The script will download the easeagent v2.0.2 release from the github release page. You should make sure you can access the internet or github. If you hard to access the github or internet, you could build easeagent from scratch, and put build target (easeagent-dep.jar) into the ` easeagent/downloaded/` directory, and rename the file name to `easeagent-v2.0.2.jar`
 
-```console
-ls tempo/tempo-data/
-```
+### Stop the full stack
 
-## Start test demo project
-
-1. Build test project
-```
-git clone https://github.com/megaease/easeagent-test-demo.git
-
-cd ease-test-demo
-
-mvn clean package
+After you finished test, using following command to destroy service
 
 ```
-2. Download Easeagent 
+./spring-petclinic.sh stop
 ```
- wget https://github.com/megaease/easeagent/releases/latest/download/easeagent.jar
-```
-
-3. Start demo
-
-```
-java -javaagent:easeagent.jar -Deaseagent.config.path=agent-tempo.properties -Deaseagent.server.port=9900 -Deaseagent.name=demo-employee -jar spring-gateway/employee/target/employee-*.jar &
-java -javaagent:easeagent.jar -Deaseagent.config.path=agent-tempo.properties -Deaseagent.server.port=9901 -Deaseagent.name=demo-consumer -jar spring-gateway/consumer/target/consumer-*.jar &
-java -javaagent:easeagent.jar -Deaseagent.config.path=agent-tempo.properties -Deaseagent.server.port=9902 -Deaseagent.name=demo-api -jar spring-gateway/gateway/target/gateway-service-*.jar &
-```
-
-4. Generate tracing data
-```
-curl -v http://127.0.0.1:18080/employee/message
-
-curl -v http://127.0.0.1:18080/consumer/message
-
-```
-
-## Visualization
-
-Navigate to [Grafana](http://localhost:3000/explore) and query tracing and metric data.
-
-- Tracing
-![image](./doc/images/tracing.png)
-
-- Metirc dashboard
-![image](./doc/images/metric.png)
-
-You can also access metric data through [Prometheus](http://localhost:9090)
-
-## To stop the setup use -
-
-```console
-docker-compose down -v
-```
+### 

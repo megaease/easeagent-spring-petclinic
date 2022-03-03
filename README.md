@@ -34,10 +34,13 @@ We leverage the docker-compose to provision the full stack service, services inc
 
 > All images in the stacks are pulled from the docker official registry. You should make sure you can pull images from it. All images are official image. **WE HAVE NOT CHANGE ANY THING OF THEM**
 
+> After you clone the repository, you need run `git submodule update --init` to update submodule, which is configuratoin of the spring-petclinic
+
 Provisioning full stack command is:
 ```
 ./spring-petclinic.sh start
 ```
+
 
 > The script will download the easeagent v2.0.2 release from the github release page. You should make sure you can access the internet or github. If you hard to access the github or internet, you could build easeagent from scratch, and put build target (easeagent-dep.jar) into the ` easeagent/downloaded/` directory, and rename the file name to `easeagent-v2.0.2.jar`
 

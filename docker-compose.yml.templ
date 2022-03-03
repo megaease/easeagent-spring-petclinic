@@ -36,9 +36,8 @@ services:
     - "-javaagent:/easeagent-volume/downloaded/easeagent-${VERSION}.jar" 
     - "-Deaseagent.config.path=/easeagent-volume/agent_customers-service.properties"
     - "-Deaseagent.server.port=9900"
-    - "-Dspring.zipkin.enabled=false"
     - "-Dspring.sleuth_enabled=false"
-    - "-Dspring.sleuth.sampler.percentage=0"
+    - "-Dspring.sleuth.web.enabled=false"
     - "org.springframework.boot.loader.JarLauncher"
 
   visits-service:
@@ -58,9 +57,8 @@ services:
     - "-javaagent:/easeagent-volume/downloaded/easeagent-${VERSION}.jar" 
     - "-Deaseagent.config.path=/easeagent-volume/agent_visits-service.properties"
     - "-Deaseagent.server.port=9900"
-    - "-Dspring.zipkin.enabled=false"
     - "-Dspring.sleuth_enabled=false"
-    - "-Dspring.sleuth.sampler.percentage=0"
+    - "-Dspring.sleuth.web.enabled=false"
     - "org.springframework.boot.loader.JarLauncher"
 
   vets-service:
@@ -80,9 +78,8 @@ services:
     - "-javaagent:/easeagent-volume/downloaded/easeagent-${VERSION}.jar" 
     - "-Deaseagent.config.path=/easeagent-volume/agent_vets-service.properties"
     - "-Deaseagent.server.port=9900"
-    - "-Dspring.zipkin.enabled=false"
     - "-Dspring.sleuth_enabled=false"
-    - "-Dspring.sleuth.sampler.percentage=0"
+    - "-Dspring.sleuth.web.enabled=false"
     - "org.springframework.boot.loader.JarLauncher"
 
   api-gateway:
@@ -103,9 +100,8 @@ services:
     - "-Deaseagent.config.path=/easeagent-volume/agent_api-gateway.properties"
     - "-Deaseagent.log.conf=/easeagent-volume/easeagent-log4j2.xml"
     - "-Deaseagent.server.port=9900"
-    - "-Dspring.zipkin.enabled=false"
     - "-Dspring.sleuth_enabled=false"
-    - "-Dspring.sleuth.sampler.percentage=0"
+    - "-Dspring.sleuth.web.enabled=false"
     - "org.springframework.boot.loader.JarLauncher"
 
   tempo:

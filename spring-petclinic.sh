@@ -3,7 +3,7 @@
 set -e
 
 export SCRIPTPATH=$(realpath $(dirname ${BASH_SOURCE[0]}))
-export VERSION=v2.0.1
+export VERSION=v2.1.0
 
 EASEAGENTDIR=${SCRIPTPATH}/easeagent/downloaded
 EASEAGENTFILE=${EASEAGENTDIR}/easeagent-${VERSION}.jar

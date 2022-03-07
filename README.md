@@ -31,6 +31,8 @@ We leverage the docker-compose to provision the full-stack service, services inc
 - `grafana` service is dedicated to visualizing the metrics and tracing data.
 - `loads` service which is dedicated to producing loads to all spring-petclinic services.
 
+> As the spring-petclinic applications have integrated with the [spring-cloud-sleuth](https://github.com/spring-cloud/spring-cloud-sleuth). In order to avoiding interfering with the demonstration, we disable the spring sleuth via `spring.sleuth.enabled=false` and `spring.sleuth.web.enabled=false`.
+
 
 After you clone the repository, you need to run **git submodule update --init** to update the submodule, which is the configuration of the spring-petclinic.
 

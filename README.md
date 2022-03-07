@@ -11,7 +11,7 @@ A repository demonstrates how to leverage the EaseAgent to monitor java applicat
     - [Visualization](#visualization)
   
 ## Purpose
-With the EaseAgent, the metrics of [spring-petclinic applications](https://github.com/spring-petclinic/spring-petclinic-microservices) like throughput, latency, and tracing data could be collected Prometheus and tempo. The Grafana allows us to query, visualize, on and understand the metrics that we stored in tempo and Prometheus.
+With the EaseAgent, the metrics of [spring-petclinic applications](https://github.com/spring-petclinic/spring-petclinic-microservices) like throughput, latency, and tracing data could be collected by the Prometheus and tempo. The Grafana allows us to query, visualize, on and understand the metrics that we stored in tempo and Prometheus.
 
 ## Quick Start
 
@@ -41,7 +41,7 @@ git submodule update --init
 ```
 
 
-> All images in the stacks are pulled from the docker official registry. You should make sure you can pull images from it. All images are official images. **WE HAVE NOT TO CHANGE ANYTHING OF THEM**.
+> All images in the stacks are pulled from the docker official registry. You should make sure you can pull images from it. All images are official images. **WE HAVE NOT CHANGE ANYTHING OF THEM**.
 
 Provisioning full-stack command is:
 ```shell
@@ -49,7 +49,7 @@ Provisioning full-stack command is:
 ```
 
 
-> The script will download the easeagent v2.0.2 release from the Github release page. You should make sure you can access the internet or Github. If you were hard to access the GitHub or internet, you could build easeagent from scratch and put the build target (easeagent-dep.jar) into the ` easeagent/downloaded/` directory, and rename the file name to `easeagent-v2.0.2.jar`.
+> The script will download the easeagent v2.1.0 release from the Github release page. You should make sure you can access the internet or Github. If you were hard to access the GitHub or internet, you could build easeagent from scratch and put the build target (easeagent-dep.jar) into the ` easeagent/downloaded/` directory, and rename the file name to `easeagent-v2.1.0.jar`.
 
 ### Stop the full stack
 

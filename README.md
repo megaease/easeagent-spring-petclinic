@@ -9,9 +9,10 @@ A repository demonstrates how to leverage the EaseAgent to monitor java applicat
     - [Start the full stack](#start-the-full-stack)
     - [Stop the full stack](#stop-the-full-stack)
     - [Visualization](#visualization)
+  - [Appendix](#appendix)
   
 ## Purpose
-With the EaseAgent, the metrics of [spring-petclinic applications](https://github.com/spring-petclinic/spring-petclinic-microservices) like throughput, latency, and tracing data could be collected by the Prometheus and tempo. The Grafana allows us to query, visualize, on and understand the metrics that we stored in tempo and Prometheus.
+With the [EaseAgent](https://github.com/megaease/easeagent), the metrics of [spring-petclinic applications](https://github.com/spring-petclinic/spring-petclinic-microservices) like throughput, latency, and tracing data could be collected by the Prometheus and tempo. The Grafana allows us to query, visualize, on and understand the metrics that we stored in tempo and Prometheus.
 
 ## Quick Start
 
@@ -74,5 +75,11 @@ Just follow the step-by-step instructions which will guide you to get a good vis
 - Step 4. If you want to check the tracing data, you could click the `explore` in the left menu bar. Click the `Search - beta` to switch search mode. Click `search query` button in the right up corner, there is a list containing many tracing. Chose one to click.
 
 ![tracing](./doc/images/tracing.png)
+
+
+## Appendix
+
+The introduction about full metrics collected by the Prometheus is at [here](https://github.com/megaease/easeagent/blob/master/doc/prometheus-metric-schedule.md)
+
 
 *-- End --*

@@ -3,7 +3,7 @@
 set -e
 
 export SCRIPTPATH=$(realpath $(dirname ${BASH_SOURCE[0]}))
-export VERSION=v2.1.0
+export VERSION=latest
 
 EASEAGENTDIR=${SCRIPTPATH}/easeagent/downloaded
 EASEAGENTFILE=${EASEAGENTDIR}/easeagent-${VERSION}.jar
@@ -16,13 +16,18 @@ function generate_specs() {
 
 
 function prepare() {
-
   mkdir -p ${EASEAGENTDIR}
+
   if [ ! -f ${EASEAGENTFILE} ]; then
     echo "easeagent-${VERSION}.jar file can't be found. Downloading from github release page..."
-    curl -sLk https://github.com/megaease/easeagent/releases/download/${VERSION}/easeagent.jar -o ${EASEAGENTFILE}
+    if [ "$VERSION" == "latest" ]; then
+        curl -sLk https://github.com/megaease/easeagent/releases/${VERSION}/download/easeagent.jar -o ${EASEAGENTFILE}
+    else
+        curl -sLk https://github.com/megaease/easeagent/releases/download/${VERSION}/easeagent.jar -o ${EASEAGENTFILE}
+    fi
     echo "The file was downloaded succeed"
   fi
+  cp -f ${EASEAGENTFILE} easeagent.jar
 }
 
 

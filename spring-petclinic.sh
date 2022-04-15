@@ -7,6 +7,8 @@ export VERSION=latest
 
 EASEAGENTDIR=${SCRIPTPATH}/easeagent/downloaded
 EASEAGENTFILE=${EASEAGENTDIR}/easeagent-${VERSION}.jar
+EASEAGENT_INUSE=${EASEAGENTDIR}/easeagent.jar
+
 DOCKERCOMPOSEFILE=${SCRIPTPATH}/docker-compose.yml
 > ${DOCKERCOMPOSEFILE}
 
@@ -21,13 +23,13 @@ function prepare() {
   if [ ! -f ${EASEAGENTFILE} ]; then
     echo "easeagent-${VERSION}.jar file can't be found. Downloading from github release page..."
     if [ "$VERSION" == "latest" ]; then
-        curl -sLk https://github.com/megaease/easeagent/releases/${VERSION}/download/easeagent.jar -o ${EASEAGENTFILE}
+        curl -sLk https://github.com/megaease/easeagent/releases/latest/download/easeagent.jar -o ${EASEAGENTFILE}
     else
         curl -sLk https://github.com/megaease/easeagent/releases/download/${VERSION}/easeagent.jar -o ${EASEAGENTFILE}
     fi
     echo "The file was downloaded succeed"
   fi
-  cp -f ${EASEAGENTFILE} easeagent.jar
+  cp -f ${EASEAGENTFILE} ${EASEAGENT_INUSE}
 }
 
 
@@ -45,7 +47,7 @@ function stop() {
 
 
 if [ $# -ne 1 ];then
-   echo "usage: ${BASH_SOURCE[0]} <start/stop>"
+   echo "usage: ${BASH_SOURCE[0]} <start/stop/generate>"
    exit 1
 fi
 
@@ -59,8 +61,12 @@ case $1 in
     stop
     ;;
 
+  "generate ")
+    generate_specs
+    ;;
+
   *)
-    echo "usage: ${BASH_SOURCE[0]} <start/stop>"
+    echo "usage: ${BASH_SOURCE[0]} <start/stop/generate>"
     exit 1 
     ;;
 esac

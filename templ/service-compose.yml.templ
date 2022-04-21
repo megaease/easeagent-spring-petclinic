@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  customers-service:
+    image: springcommunity/spring-petclinic-customers-service
+    container_name: customers-service
+    hostname: customers-service
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    entrypoint: 
+      - "./dockerize"
+      - "-wait=tcp://discovery-server:8761"
+      - "-timeout=60s"
+      - "--"
+      - "java"
+      - "$JAVA_AGENT_CONFIG"
+      - "-javaagent:${JMX_AGENT_FILE}=9901:${JMX_AGENT_CONFIG}"
+      - "-Deaseagent.config.path=/easeagent-volume/agent_benchmark.properties"
+      - "-Deaseagent.name=customers-service"
+      - "-Deaseagent.server.port=9900"
+      - "-Dspring.sleuth_enabled=false"
+      - "-Dspring.sleuth.web.enabled=false"
+      - "org.springframework.boot.loader.JarLauncher"
+    ports:
+      - "8081:8081"
+      - "9901:9901"
+      - "9900:9900"
+    extra_hosts:
+      - "config-server:172.20.2.115"
+      - "discovery-server:172.20.2.115"
+
+
+  vets-service:
+    image: springcommunity/spring-petclinic-vets-service
+    container_name: vets-service
+    hostname: vets-service
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    entrypoint: 
+      - "./dockerize"
+      - "-wait=tcp://discovery-server:8761"
+      - "-timeout=60s"
+      - "--"
+      - "java"
+      - "$JAVA_AGENT_CONFIG"
+      - "-javaagent:${JMX_AGENT_FILE}=9901:${JMX_AGENT_CONFIG}"
+      - "-Deaseagent.config.path=/easeagent-volume/agent_benchmark.properties"
+      - "-Deaseagent.name=vets-service"
+      - "-Deaseagent.server.port=9900"
+      - "-Dspring.sleuth_enabled=false"
+      - "-Dspring.sleuth.web.enabled=false"
+      - "org.springframework.boot.loader.JarLauncher"
+    ports:
+      - "8083:8083"
+      - "9901:9901"
+      - "9900:9900"
+
+    extra_hosts:
+      - "config-server:172.20.2.115"
+      - "discovery-server:172.20.2.115"
+

@@ -1,0 +1,63 @@
+version: '3'
+
+services:
+  visits-service:
+    image: springcommunity/spring-petclinic-visits-service
+    container_name: visits-service
+    network_mode: host
+    volumes:
+     - /Users/zhoujinze/work/megaease/monitor/easeagent-spring-petclinic/easeagent:/easeagent-volume
+    entrypoint: 
+      - "./dockerize"
+      - "-wait=tcp://discovery-server:8761"
+      - "-timeout=60s"
+      - "--"
+      - "java"
+      - "-Deaseagent.enable=false"
+      - "-javaagent:/Users/zhoujinze/work/megaease/monitor/easeagent-spring-petclinic/easeagent/downloaded/benchmark/jmx_prometheus_javaagent-0.16.2-SNAPSHOT.jar=9901:/Users/zhoujinze/work/megaease/monitor/easeagent-spring-petclinic/easeagent/downloaded/benchmark/jmx_prometheus_config.yml"
+      - "-Deaseagent.config.path=/easeagent-volume/agent_benchmark.properties"
+      - "-Deaseagent.name=visits-service"
+      - "-Deaseagent.server.port=9900"
+      - "-Dspring.sleuth_enabled=false"
+      - "-Dspring.sleuth.web.enabled=false"
+      - "org.springframework.boot.loader.JarLauncher"
+    ports:
+      - "8082:8082"
+      - "9901:9901"
+      - "9900:9900"
+    extra_hosts:
+      - "config-server:172.20.2.115"
+      - "discovery-server:172.20.2.115"
+      - "customers-service:172.20.2.212"
+      - "vets-service:172.20.2.212"
+
+
+  api-gateway:
+    image: springcommunity/spring-petclinic-api-gateway
+    container_name: api-gateway
+    volumes:
+     - /Users/zhoujinze/work/megaease/monitor/easeagent-spring-petclinic/easeagent:/easeagent-volume
+    entrypoint: 
+      - "./dockerize"
+      - "-wait=tcp://discovery-server:8761"
+      - "-timeout=60s"
+      - "--"
+      - "java"
+      - "-Deaseagent.enable=false"
+      - "-javaagent:/Users/zhoujinze/work/megaease/monitor/easeagent-spring-petclinic/easeagent/downloaded/benchmark/jmx_prometheus_javaagent-0.16.2-SNAPSHOT.jar=9901:/Users/zhoujinze/work/megaease/monitor/easeagent-spring-petclinic/easeagent/downloaded/benchmark/jmx_prometheus_config.yml"
+      - "-Deaseagent.config.path=/easeagent-volume/agent_benchmark.properties"
+      - "-Deaseagent.name=api-service"
+      - "-Deaseagent.log.conf=/easeagent-volume/easeagent-log4j2.xml"
+      - "-Deaseagent.server.port=9900"
+      - "-Dspring.sleuth_enabled=false"
+      - "-Dspring.sleuth.web.enabled=false"
+      - "org.springframework.boot.loader.JarLauncher"
+    ports:
+      - "8080:8080"
+      - "9901:9901"
+      - "9900:9900"
+    extra_hosts:
+      - "config-server:172.20.2.115"
+      - "discovery-server:172.20.2.115"
+      - "customers-service:172.20.2.212"
+      - "vets-service:172.20.2.212"

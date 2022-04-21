@@ -27,6 +27,6 @@ generated/
 tempo-data/
 
 easeagent.jar
-docker-compose.yml
+/*.yml
 easeagent/downloaded
 easeagent/agent_megacloud.properties

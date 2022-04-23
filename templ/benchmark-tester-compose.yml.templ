@@ -24,6 +24,7 @@ services:
       - "api-gateway-agent:${GATEWAY_AGENT}"
       - "visits-service-agent:${VISITS_AGENT}"
       - "vets-service-agent:${PETS_AGENT}"
+      - "host.docker.internal:${TESTER_IP}"
     ports:
       - "9090:9090"
 

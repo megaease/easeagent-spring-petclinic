@@ -29,47 +29,10 @@
         </collectionProp>
       </HeaderManager>
       <hashTree/>
-      <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
-        <boolProp name="ResultCollector.error_logging">false</boolProp>
-        <objProp>
-          <name>saveConfig</name>
-          <value class="SampleSaveConfiguration">
-            <time>true</time>
-            <latency>true</latency>
-            <timestamp>true</timestamp>
-            <success>true</success>
-            <label>true</label>
-            <code>true</code>
-            <message>true</message>
-            <threadName>true</threadName>
-            <dataType>true</dataType>
-            <encoding>false</encoding>
-            <assertions>true</assertions>
-            <subresults>true</subresults>
-            <responseData>false</responseData>
-            <samplerData>false</samplerData>
-            <xml>false</xml>
-            <fieldNames>true</fieldNames>
-            <responseHeaders>false</responseHeaders>
-            <requestHeaders>false</requestHeaders>
-            <responseDataOnError>false</responseDataOnError>
-            <saveAssertionResultsFailureMessage>true</saveAssertionResultsFailureMessage>
-            <assertionsResultsToSave>0</assertionsResultsToSave>
-            <bytes>true</bytes>
-            <sentBytes>true</sentBytes>
-            <url>true</url>
-            <threadCounts>true</threadCounts>
-            <idleTime>true</idleTime>
-            <connectTime>true</connectTime>
-          </value>
-        </objProp>
-        <stringProp name="filename"></stringProp>
-      </ResultCollector>
-      <hashTree/>
       <kg.apc.jmeter.threads.UltimateThreadGroup guiclass="kg.apc.jmeter.threads.UltimateThreadGroupGui" testclass="kg.apc.jmeter.threads.UltimateThreadGroup" testname="origin" enabled="true">
         <collectionProp name="ultimatethreadgroupdata">
-          <collectionProp name="-273753481">
-            <stringProp name="1598">20</stringProp>
+          <collectionProp name="-1471044317">
+            <stringProp name="50">2</stringProp>
             <stringProp name="0">0</stringProp>
             <stringProp name="1598">20</stringProp>
             <stringProp name="50547">300</stringProp>
@@ -88,8 +51,8 @@
             <stringProp name="-880905839">target</stringProp>
             <stringProp name="-1849162169">OWNER_ID</stringProp>
             <stringProp name="-1938316197">PET_ID</stringProp>
-            <stringProp name="-1619721423">PETCLINC_HOST</stringProp>
-            <stringProp name="-1619483126">PETCLINC_PORT</stringProp>
+            <stringProp name="1577710656">PETCLINIC_HOST</stringProp>
+            <stringProp name="1577948953">PETCLINIC_PORT</stringProp>
           </collectionProp>
           <collectionProp name="UserParameters.thread_values">
             <collectionProp name="727838334">
@@ -107,7 +70,7 @@
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pr�-d�finies" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">${PETCLINC_HOST}</stringProp>
+          <stringProp name="HTTPSampler.domain">${PETCLINIC_HOST}</stringProp>
           <stringProp name="HTTPSampler.port">${PETCLINIC_PORT}</stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
@@ -365,8 +328,8 @@
       </hashTree>
       <kg.apc.jmeter.threads.UltimateThreadGroup guiclass="kg.apc.jmeter.threads.UltimateThreadGroupGui" testclass="kg.apc.jmeter.threads.UltimateThreadGroup" testname="agent" enabled="true">
         <collectionProp name="ultimatethreadgroupdata">
-          <collectionProp name="-273753481">
-            <stringProp name="1598">20</stringProp>
+          <collectionProp name="-1471044317">
+            <stringProp name="50">2</stringProp>
             <stringProp name="0">0</stringProp>
             <stringProp name="1598">20</stringProp>
             <stringProp name="50547">300</stringProp>
@@ -385,8 +348,8 @@
             <stringProp name="-880905839">target</stringProp>
             <stringProp name="-1849162169">OWNER_ID</stringProp>
             <stringProp name="-1938316197">PET_ID</stringProp>
-            <stringProp name="-1619721423">PETCLINC_HOST</stringProp>
-            <stringProp name="-1619483126">PETCLINC_PORT</stringProp>
+            <stringProp name="1577710656">PETCLINIC_HOST</stringProp>
+            <stringProp name="1577948953">PETCLINIC_PORT</stringProp>
           </collectionProp>
           <collectionProp name="UserParameters.thread_values">
             <collectionProp name="2110848197">
@@ -404,7 +367,7 @@
           <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="Variables pr�-d�finies" enabled="true">
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
-          <stringProp name="HTTPSampler.domain">${PETCLINC_HOST}</stringProp>
+          <stringProp name="HTTPSampler.domain">${PETCLINIC_HOST}</stringProp>
           <stringProp name="HTTPSampler.port">${PETCLINIC_PORT}</stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>

@@ -7,11 +7,11 @@ scrape_configs:
   - job_name: "jmx-customers-agent"
     static_configs:
       - targets: ["customers-service-agent:9901"]
+    metrics_path: "/metrics" 
 
   - job_name: "jmx-customers-origin"
     static_configs:
       - targets: ["customers-service-origin:9901"]
-    metrics_path: "/metrics" 
     metrics_path: "/metrics" 
 
   # Jmeter

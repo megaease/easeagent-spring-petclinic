@@ -1,26 +1,6 @@
 version: '3'
 
 services:
-  config-server:
-    image: springcommunity/spring-petclinic-config-server
-    container_name: config-server
-    volumes:
-      - ${SCRIPTPATH}/spring-petclinic-microservices-config:/git-repo
-    environment:
-      - GIT_REPO=/git-repo
-      - SPRING_PROFILES_ACTIVE=native
-    ports:
-      - "8888:8888"
-
-  discovery-server:
-    image: springcommunity/spring-petclinic-discovery-server
-    container_name: discovery-server
-    depends_on:
-      - config-server
-    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
-    ports:
-      - "8761:8761"
- 
   tempo:
     image: grafana/tempo:latest
     container_name: tempo
@@ -29,6 +9,8 @@ services:
       - ${SCRIPTPATH}/tempo/tempo-local.yaml:/etc/tempo.yaml
       - ${SCRIPTPATH}/tempo/overrides.yaml:/etc/overrides.yaml
       - ${SCRIPTPATH}/tempo/tempo-data:/tmp/tempo
+    ports:
+      - "9411:9411"
 
   prometheus:
     image: prom/prometheus:latest
@@ -37,11 +19,11 @@ services:
     volumes:
       - ${SCRIPTPATH}/prometheus/${PROMETHEUS_CONFIG_FILE}:/etc/prometheus.yaml
     extra_hosts:
-      - "customers-service-origin:172.20.2.138"
-      - "customers-service-agent:172.20.2.212"
-      - "api-gateway-agent:172.20.2.212"
-      - "visits-service-agent:172.20.2.212"
-      - "vets-service-agent:172.20.2.212"
+      - "customers-service-origin:${CUSTOMERS_ORIGIN}"
+      - "customers-service-agent:${CUSTOMERS_AGENT}"
+      - "api-gateway-agent:${GATEWAY_AGENT}"
+      - "visits-service-agent:${VISITS_AGENT}"
+      - "vets-service-agent:${PETS_AGENT}"
     ports:
       - "9090:9090"
 

@@ -9,8 +9,8 @@ EASEAGENTDIR=${SCRIPTPATH}/easeagent/downloaded
 EASEAGENTFILE=${EASEAGENTDIR}/easeagent-${VERSION}.jar
 EASEAGENT_INUSE=${EASEAGENTDIR}/easeagent.jar
 
-export JMX_AGENT_FILE=${EASEAGENTDIR}/benchmark/jmx_prometheus_javaagent-0.16.2-SNAPSHOT.jar
-export JMX_AGENT_CONFIG=${EASEAGENTDIR}/benchmark/jmx_prometheus_config.yml
+export JMX_AGENT_FILE="/easeagent-volume/benchmark/jmx_prometheus_javaagent-0.16.2-SNAPSHOT.jar"
+export JMX_AGENT_CONFIG="/easeagent-volume/benchmark/jmx_prometheus_config.yml"
 
 export EASEAGENT_CONFIG_FILE=${EASEAGENT_CONFIG_FILE:-agent_benchmark.properties}
 export PROMETHEUS_CONFIG_FILE=${PROMETHEUS_CONFIG_FILE:-prometheus_benchmark.yaml}

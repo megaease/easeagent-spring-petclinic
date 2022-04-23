@@ -3,20 +3,38 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: "api-gateway"
+  # JMX collect JVM Metric
+  - job_name: "jmx-customers-agent"
     static_configs:
-      - targets: ["api-gateway:9901"]
-    metrics_path: "/metrics" 
-  - job_name: "visits-service"
+      - targets: ["customers-service-agent:9901"]
+
+  - job_name: "jmx-customers-origin"
     static_configs:
-      - targets: ["visits-service:9901"]
+      - targets: ["customers-service-origin:9901"]
     metrics_path: "/metrics" 
-  - job_name: "customers-service"
+    metrics_path: "/metrics" 
+
+  # Jmeter
+  - job_name: 'jmeter'
     static_configs:
-      - targets: ["customers-service:9901"]
+      - targets: ['host.docker.internal:9270']
     metrics_path: "/metrics" 
-  - job_name: "vets-service"
+
+  # Easeagent - metrics
+  - job_name: "agent-api-gateway"
     static_configs:
-      - targets: ["vets-service:9901"]
-    metrics_path: "/metrics" 
+      - targets: ["api-gateway-agent:9905"]
+    metrics_path: "/prometheus/metrics" 
+  - job_name: "agent-visits-service"
+    static_configs:
+      - targets: ["visits-service-agent:9903"]
+    metrics_path: "/prometheus/metrics" 
+  - job_name: "agent-customers-service"
+    static_configs:
+      - targets: ["customers-service-agent:9902"]
+    metrics_path: "/prometheus/metrics" 
+  - job_name: "agent-vets-service"
+    static_configs:
+      - targets: ["vets-service-agent:9904"]
+    metrics_path: "/prometheus/metrics"  
+

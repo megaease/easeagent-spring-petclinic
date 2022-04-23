@@ -1,0 +1,131 @@
+version: '2.1'
+
+services:
+  config-server:
+    image: springcommunity/spring-petclinic-config-server
+    container_name: config-server
+    volumes:
+    - ${SCRIPTPATH}/spring-petclinic-microservices-config:/git-repo
+    environment:
+      - GIT_REPO=/git-repo
+      - SPRING_PROFILES_ACTIVE=native
+    mem_limit: 512M
+
+  discovery-server:
+    image: springcommunity/spring-petclinic-discovery-server
+    container_name: discovery-server
+    mem_limit: 512M
+    depends_on:
+      - config-server
+    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+
+  customers-service:
+    image: springcommunity/spring-petclinic-customers-service
+    container_name: customers-service
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+     - config-server
+     - discovery-server
+    entrypoint: 
+      - "./dockerize"
+      - "-wait=tcp://discovery-server:8761"
+      - "-timeout=60s"
+      - "--"
+      - "java"
+      - "${JAVA_AGENT_CONFIG}"
+      - "-javaagent:${JMX_AGENT_FILE}=9901:${JMX_AGENT_CONFIG}"
+      - "-Deaseagent.config.path=/easeagent-volume/${EASEAGENT_CONFIG_FILE}"
+      - "-Deaseagent.name=customers-service"
+      - "-Deaseagent.server.port=9902"
+      - "-Dspring.sleuth_enabled=false"
+      - "-Dspring.sleuth.web.enabled=false"
+      - "org.springframework.boot.loader.JarLauncher"
+    extra_hosts:
+      - "tempo:${TEMPO_IP}"
+    ports:
+      - "9901:9901"
+      - "9902:9902"
+      - "8082:8082"
+
+  visits-service:
+    image: springcommunity/spring-petclinic-visits-service
+    container_name: visits-service
+    volumes:
+      - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: 
+      - "./dockerize"
+      - "-wait=tcp://discovery-server:8761"
+      - "-timeout=60s"
+      - "--"
+      - "java"
+      - "${JAVA_AGENT_CONFIG}"
+      - "-Deaseagent.config.path=/easeagent-volume/${EASEAGENT_CONFIG_FILE}"
+      - "-Deaseagent.name=visits-service"
+      - "-Deaseagent.server.port=9903"
+      - "-Dspring.sleuth_enabled=false"
+      - "-Dspring.sleuth.web.enabled=false"
+      - "org.springframework.boot.loader.JarLauncher"
+    extra_hosts:
+      - "tempo:${TEMPO_IP}"
+    ports:
+      - "9903:9903"
+
+  vets-service:
+    image: springcommunity/spring-petclinic-vets-service
+    container_name: vets-service
+    volumes:
+      - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: 
+      - "./dockerize"
+      - "-wait=tcp://discovery-server:8761"
+      - "-timeout=60s"
+      - "--"
+      - "java"
+      - "${JAVA_AGENT_CONFIG}"
+      - "-Deaseagent.config.path=/easeagent-volume/${EASEAGENT_CONFIG_FILE}"
+      - "-Deaseagent.name=vets-service"
+      - "-Deaseagent.server.port=9904"
+      - "-Dspring.sleuth_enabled=false"
+      - "-Dspring.sleuth.web.enabled=false"
+      - "org.springframework.boot.loader.JarLauncher"
+    extra_hosts:
+      - "tempo:${TEMPO_IP}"
+    ports:
+      - "9904:9904"
+
+  api-gateway:
+    image: springcommunity/spring-petclinic-api-gateway
+    container_name: api-gateway
+    volumes:
+      - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+      - config-server
+      - discovery-server
+    entrypoint: 
+      - "./dockerize"
+      - "-wait=tcp://discovery-server:8761"
+      - "-timeout=60s"
+      - "--"
+      - "java"
+      - "${JAVA_AGENT_CONFIG}"
+      - "-Deaseagent.config.path=/easeagent-volume/${EASEAGENT_CONFIG_FILE}"
+      - "-Deaseagent.name=api-service"
+      - "-Deaseagent.log.conf=/easeagent-volume/easeagent-log4j2.xml"
+      - "-Deaseagent.server.port=9905"
+      - "-Dspring.sleuth_enabled=false"
+      - "-Dspring.sleuth.web.enabled=false"
+      - "org.springframework.boot.loader.JarLauncher"
+    extra_hosts:
+      - "tempo:${TEMPO_IP}"
+    ports:
+      - "9905:9905"
+      - "8080:8080"
+ 
+

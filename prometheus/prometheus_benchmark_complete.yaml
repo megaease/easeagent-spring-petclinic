@@ -1,0 +1,22 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "api-gateway"
+    static_configs:
+      - targets: ["api-gateway:9901"]
+    metrics_path: "/metrics" 
+  - job_name: "visits-service"
+    static_configs:
+      - targets: ["visits-service:9901"]
+    metrics_path: "/metrics" 
+  - job_name: "customers-service"
+    static_configs:
+      - targets: ["customers-service:9901"]
+    metrics_path: "/metrics" 
+  - job_name: "vets-service"
+    static_configs:
+      - targets: ["vets-service:9901"]
+    metrics_path: "/metrics" 

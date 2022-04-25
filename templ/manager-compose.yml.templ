@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  config-server:
+    image: springcommunity/spring-petclinic-config-server
+    container_name: config-server
+    volumes:
+      - ${SCRIPTPATH}/spring-petclinic-microservices-config:/git-repo
+    environment:
+      - GIT_REPO=/git-repo
+      - SPRING_PROFILES_ACTIVE=native
+    ports:
+      - "8888:8888"
+
+  discovery-server:
+    image: springcommunity/spring-petclinic-discovery-server
+    container_name: discovery-server
+    depends_on:
+      - config-server
+    entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
+    ports:
+      - "8761:8761"
+ 
+  tempo:
+    image: grafana/tempo:latest
+    container_name: tempo
+    command: [ "-search.enabled=true", "-config.file=/etc/tempo.yaml" ]
+    volumes:
+      - ${SCRIPTPATH}/tempo/tempo-local.yaml:/etc/tempo.yaml
+      - ${SCRIPTPATH}/tempo/overrides.yaml:/etc/overrides.yaml
+      - ${SCRIPTPATH}/tempo/tempo-data:/tmp/tempo
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    command: [ "--config.file=/etc/prometheus.yaml" ]
+    volumes:
+      - ${SCRIPTPATH}/prometheus/${PROMETHEUS_CONFIG_FILE}:/etc/prometheus.yaml
+    extra_hosts:
+      - "customers-service-origin:172.20.2.138"
+      - "customers-service-agent:172.20.2.212"
+      - "api-gateway-agent:172.20.2.212"
+      - "visits-service-agent:172.20.2.212"
+      - "vets-service-agent:172.20.2.212"
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:main   # track main as search is under active development
+    container_name: grafana
+    volumes:
+      - ${SCRIPTPATH}/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ${SCRIPTPATH}/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - "3000:3000"
+ 
+

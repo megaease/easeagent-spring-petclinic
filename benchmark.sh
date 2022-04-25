@@ -9,10 +9,15 @@ EASEAGENTDIR=${SCRIPTPATH}/easeagent/downloaded
 EASEAGENTFILE=${EASEAGENTDIR}/easeagent-${VERSION}.jar
 EASEAGENT_INUSE=${EASEAGENTDIR}/easeagent.jar
 
-export EASEAGENT_CONFIG_FILE=${EASEAGENT_CONFIG_FILE:-agent_demo.properties}
-export PROMETHEUS_CONFIG_FILE=${PROMETHEUS_CONFIG_FILE:-prometheus.yaml}
+source ${SCRIPTPATH}/env.sh
 
-COMPOSER=${COMPOSER:-docker-compose}
+export JMX_AGENT_FILE="/easeagent-volume/benchmark/jmx_prometheus_javaagent-0.16.2-SNAPSHOT.jar"
+export JMX_AGENT_CONFIG="/easeagent-volume/benchmark/jmx_prometheus_config.yml"
+
+export EASEAGENT_CONFIG_FILE=${EASEAGENT_CONFIG_FILE:-agent_benchmark.properties}
+export PROMETHEUS_CONFIG_FILE=${PROMETHEUS_CONFIG_FILE:-prometheus_benchmark.yaml}
+
+COMPOSER=${COMPOSER:-benchmark-swarm-composer}
 
 DOCKERCOMPOSEFILE=${SCRIPTPATH}/${COMPOSER}.yml
 > ${DOCKERCOMPOSEFILE}
@@ -20,7 +25,6 @@ DOCKERCOMPOSEFILE=${SCRIPTPATH}/${COMPOSER}.yml
 function generate_specs() {
   envsubst < ${SCRIPTPATH}/templ/${COMPOSER}.yml.templ > ${DOCKERCOMPOSEFILE}
 }
-
 
 EASEAGENT=${EASEAGENT-true}
 
@@ -50,6 +54,7 @@ function prepare() {
 function start() {
   prepare
   generate_specs
+  #docker stack deploy --compose-file ${DOCKERCOMPOSEFILE} petclinc
   docker-compose -f ${DOCKERCOMPOSEFILE} up -d
   echo "The stack was provisioned successfully."
 }
@@ -57,11 +62,12 @@ function start() {
 function stop() {
   generate_specs
   docker-compose -f ${DOCKERCOMPOSEFILE} down
+  #docker stack rm petclinc
 }
 
 
 if [ $# -ne 1 ];then
-   echo "usage: ${BASH_SOURCE[0]} <start/stop/generate>"
+    echo "usage: ${BASH_SOURCE[0]} <start [compoment(config/gateway/modules)]/stop [compoment(config/gateway/modules)>"
    exit 1
 fi
 

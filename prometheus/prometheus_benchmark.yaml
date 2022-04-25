@@ -1,0 +1,51 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # JMX collect JVM Metric
+  - job_name: "jmx-customers-agent"
+    static_configs:
+      - targets: ["customers-service-agent:9901"]
+    metrics_path: "/metrics" 
+
+  - job_name: "jmx-customers-baseline"
+    static_configs:
+      - targets: ["customers-service-baseline:9901"]
+    metrics_path: "/metrics" 
+
+
+  - job_name: "jmx-vets-agent"
+    static_configs:
+      - targets: ["vets-service-agent:9911"]
+    metrics_path: "/metrics" 
+
+  - job_name: "jmx-vets-baseline"
+    static_configs:
+      - targets: ["vets-service-baseline:9911"]
+    metrics_path: "/metrics" 
+
+  # Jmeter
+  - job_name: 'jmeter'
+    static_configs:
+      - targets: ['host.docker.internal:9270']
+    metrics_path: "/metrics" 
+
+  # Easeagent - metrics
+  - job_name: "agent-api-gateway"
+    static_configs:
+      - targets: ["api-gateway-agent:9905"]
+    metrics_path: "/prometheus/metrics" 
+  - job_name: "agent-visits-service"
+    static_configs:
+      - targets: ["visits-service-agent:9903"]
+    metrics_path: "/prometheus/metrics" 
+  - job_name: "agent-customers-service"
+    static_configs:
+      - targets: ["customers-service-agent:9902"]
+    metrics_path: "/prometheus/metrics" 
+  - job_name: "agent-vets-service"
+    static_configs:
+      - targets: ["vets-service-agent:9904"]
+    metrics_path: "/prometheus/metrics"  
+

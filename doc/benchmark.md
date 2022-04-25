@@ -94,7 +94,9 @@ bbaea31d473d   grafana/tempo:latest     "/tempo -search.enab…"   19 hours 
 #### Start Jmeter
 
 For we leverage the `Jmeter-prometheus-plugin` to export the request/response metrics, we should install the [Jmeter Plugin Manager](https://jmeter-plugins.org/wiki/PluginsManager/), and then install the `Prometheus Listener Plugin` in the available plugins list of the Plugin Manager, or install all required plugins by put plugin jars into the `lib/ext`.
-And before starting the test, the destination IP in the JMX file should be changed to the actual IP.```          <collectionProp name="UserParameters.thread_values">
+And before starting the test, the destination IP in the JMX file should be changed to the actual IP.
+
+```          <collectionProp name="UserParameters.thread_values">
             <collectionProp name="1887838014">
               <stringProp name="-1720785339">baseline</stringProp>
               <stringProp name="50">2</stringProp>
@@ -103,7 +105,10 @@ And before starting the test, the destination IP in the JMX file should be chang
               <stringProp name="1716208">8080</stringProp>
             </collectionProp>
           </collectionProp>
-......          <collectionProp name="UserParameters.thread_values">
+        
+          ......
+        
+          <collectionProp name="UserParameters.thread_values">
             <collectionProp name="1728680715">
               <stringProp name="92750597">agent</stringProp>
               <stringProp name="50">2</stringProp>
@@ -115,6 +120,7 @@ And before starting the test, the destination IP in the JMX file should be chang
 ```
 
 Then, we start the testing in non-GUI mode.
+
 ```
 export PATH_TO_JMETER="You_Path_of_Jmeter"
 export PATH_TO_THIS_PRJ="You_Path_of_This_PRJ"

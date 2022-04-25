@@ -63,6 +63,7 @@ services:
       - "--"
       - "java"
       - "${JAVA_AGENT_CONFIG}"
+      - "-javaagent:${JMX_AGENT_FILE}=9911:${JMX_AGENT_CONFIG}"
       - "-Deaseagent.config.path=/easeagent-volume/${EASEAGENT_CONFIG_FILE}"
       - "-Deaseagent.name=visits-service"
       - "-Deaseagent.server.port=9903"
@@ -73,6 +74,7 @@ services:
       - "tempo:${TEMPO_IP}"
     ports:
       - "9903:9903"
+      - "9911:9911"
 
   vets-service:
     image: springcommunity/spring-petclinic-vets-service

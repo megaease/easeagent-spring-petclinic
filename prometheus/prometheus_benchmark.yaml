@@ -9,9 +9,20 @@ scrape_configs:
       - targets: ["customers-service-agent:9901"]
     metrics_path: "/metrics" 
 
-  - job_name: "jmx-customers-origin"
+  - job_name: "jmx-customers-baseline"
     static_configs:
-      - targets: ["customers-service-origin:9901"]
+      - targets: ["customers-service-baseline:9901"]
+    metrics_path: "/metrics" 
+
+
+  - job_name: "jmx-vets-agent"
+    static_configs:
+      - targets: ["vets-service-agent:9911"]
+    metrics_path: "/metrics" 
+
+  - job_name: "jmx-vets-baseline"
+    static_configs:
+      - targets: ["vets-service-baseline:9911"]
     metrics_path: "/metrics" 
 
   # Jmeter

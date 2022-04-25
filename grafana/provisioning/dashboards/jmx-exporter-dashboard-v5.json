@@ -26,7 +26,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 7727,
   "graphTooltip": 0,
-  "iteration": 1650721595946,
+  "iteration": 1650778617189,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -103,15 +103,20 @@
       "options": {
         "barRadius": 0,
         "barWidth": 0.97,
-        "groupWidth": 0.7,
+        "groupWidth": 0.88,
         "legend": {
-          "calcs": [],
+          "calcs": [
+            "mean"
+          ],
           "displayMode": "list",
           "placement": "bottom"
         },
         "orientation": "auto",
         "showValue": "auto",
         "stacking": "none",
+        "text": {
+          "valueSize": 22
+        },
         "tooltip": {
           "mode": "single",
           "sort": "none"
@@ -154,29 +159,17 @@
           "custom": {
             "axisLabel": "",
             "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
+            "axisSoftMin": 0,
+            "fillOpacity": 80,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
               "viz": false
             },
-            "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
             "scaleDistribution": {
               "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
             }
           },
           "decimals": 0,
@@ -325,15 +318,28 @@
       "links": [],
       "maxDataPoints": 100,
       "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "groupWidth": 0.86,
         "legend": {
-          "calcs": [],
+          "calcs": [
+            "mean"
+          ],
           "displayMode": "list",
           "placement": "bottom"
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "text": {
+          "valueSize": 25
         },
         "tooltip": {
           "mode": "single",
           "sort": "none"
-        }
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "8.5.0-50432pre",
       "targets": [
@@ -352,7 +358,7 @@
         }
       ],
       "title": "Response Per Second",
-      "type": "timeseries"
+      "type": "barchart"
     },
     {
       "aliasColors": {},
@@ -418,13 +424,15 @@
             "type": "prometheus",
             "uid": "PBFA97CFB590B2093"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "avg(resp_time) by (label,quantile)",
+          "expr": "resp_time{quantile=\"0.95\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "{{label}} - {{quantile}}",
+          "legendFormat": "{{label}}-{{quantile}}-{{target}}",
+          "range": true,
           "refId": "B",
           "step": 1
         }
@@ -529,10 +537,12 @@
       "maxDataPoints": 100,
       "options": {
         "barRadius": 0,
-        "barWidth": 0.9,
+        "barWidth": 0.97,
         "groupWidth": 0.7,
         "legend": {
-          "calcs": [],
+          "calcs": [
+            "mean"
+          ],
           "displayMode": "list",
           "placement": "bottom"
         },
@@ -544,7 +554,7 @@
           "sort": "none"
         },
         "xTickLabelRotation": 0,
-        "xTickLabelSpacing": 100
+        "xTickLabelSpacing": 0
       },
       "pluginVersion": "8.5.0-50432pre",
       "targets": [
@@ -641,6 +651,7 @@
           "exemplar": true,
           "expr": " jvm_memory_bytes_max{area=\"heap\",pod_name=~\"$pod\",namespace=~\"$namespace\"}",
           "format": "time_series",
+          "hide": true,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Max - {{job}} {{pod_name}}",
@@ -1894,7 +1905,7 @@
       }
     }
   ],
-  "refresh": "30s",
+  "refresh": false,
   "schemaVersion": 36,
   "style": "dark",
   "tags": [
@@ -1964,8 +1975,8 @@
       {
         "current": {
           "selected": true,
-          "text": "30s",
-          "value": "30s"
+          "text": "2m",
+          "value": "2m"
         },
         "hide": 0,
         "includeAll": false,
@@ -1974,12 +1985,22 @@
         "name": "interval",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "30s",
             "value": "30s"
+          },
+          {
+            "selected": false,
+            "text": "1m",
+            "value": "1m"
+          },
+          {
+            "selected": true,
+            "text": "2m",
+            "value": "2m"
           }
         ],
-        "query": "30s",
+        "query": "30s,1m,2m",
         "queryValue": "",
         "skipUrlSync": false,
         "type": "custom"
@@ -1987,8 +2008,8 @@
     ]
   },
   "time": {
-    "from": "now-15m",
-    "to": "now"
+    "from": "2022-04-25T02:20:00.000Z",
+    "to": "2022-04-25T02:30:59.000Z"
   },
   "timepicker": {
     "refresh_intervals": [

@@ -19,7 +19,8 @@ services:
     volumes:
       - ${SCRIPTPATH}/prometheus/${PROMETHEUS_CONFIG_FILE}:/etc/prometheus.yaml
     extra_hosts:
-      - "customers-service-origin:${CUSTOMERS_ORIGIN}"
+      - "customers-service-baseline:${CUSTOMERS_BASELINE}"
+      - "vets-service-baseline:${VETS_BASELINE}"
       - "customers-service-agent:${CUSTOMERS_AGENT}"
       - "api-gateway-agent:${GATEWAY_AGENT}"
       - "visits-service-agent:${VISITS_AGENT}"

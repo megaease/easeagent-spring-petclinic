@@ -28,5 +28,7 @@ tempo-data/
 
 easeagent.jar
 /*.yml
+*.jtl
+*.pdf
 easeagent/downloaded
 easeagent/agent_megacloud.properties

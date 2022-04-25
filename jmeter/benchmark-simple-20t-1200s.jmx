@@ -31,8 +31,8 @@
       <hashTree/>
       <kg.apc.jmeter.threads.UltimateThreadGroup guiclass="kg.apc.jmeter.threads.UltimateThreadGroupGui" testclass="kg.apc.jmeter.threads.UltimateThreadGroup" testname="baseline" enabled="true">
         <collectionProp name="ultimatethreadgroupdata">
-          <collectionProp name="1301603208">
-            <stringProp name="1691">50</stringProp>
+          <collectionProp name="-1345939901">
+            <stringProp name="1598">20</stringProp>
             <stringProp name="0">0</stringProp>
             <stringProp name="1629">30</stringProp>
             <stringProp name="1509345">1200</stringProp>
@@ -283,8 +283,8 @@
       </hashTree>
       <kg.apc.jmeter.threads.UltimateThreadGroup guiclass="kg.apc.jmeter.threads.UltimateThreadGroupGui" testclass="kg.apc.jmeter.threads.UltimateThreadGroup" testname="agent" enabled="true">
         <collectionProp name="ultimatethreadgroupdata">
-          <collectionProp name="1273620738">
-            <stringProp name="1691">50</stringProp>
+          <collectionProp name="1215715755">
+            <stringProp name="1598">20</stringProp>
             <stringProp name="0">0</stringProp>
             <stringProp name="1629">30</stringProp>
             <stringProp name="1509345">1200</stringProp>

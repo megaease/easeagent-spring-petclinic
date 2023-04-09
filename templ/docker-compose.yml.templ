@@ -111,7 +111,7 @@ services:
       - "8080:8080"
 
   tempo:
-    image: grafana/tempo:latest
+    image: grafana/tempo:main-285a25a-amd64
     container_name: tempo
     command: [ "-search.enabled=true", "-config.file=/etc/tempo.yaml" ]
     depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]

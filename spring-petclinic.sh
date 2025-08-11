@@ -4,6 +4,8 @@ set -e
 
 export SCRIPTPATH=$(realpath $(dirname ${BASH_SOURCE[0]}))
 export VERSION=latest
+export SPRING_VERSION=2.5.1
+export PROMETHEUS_VERSION=v2.42.0
 
 EASEAGENTDIR=${SCRIPTPATH}/easeagent/downloaded
 EASEAGENTFILE=${EASEAGENTDIR}/easeagent-${VERSION}.jar

@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   config-server:
-    image: springcommunity/spring-petclinic-config-server
+    image: springcommunity/spring-petclinic-config-server:${SPRING_VERSION}
     container_name: config-server
     volumes:
     - ${SCRIPTPATH}/spring-petclinic-microservices-config:/git-repo
@@ -12,7 +12,7 @@ services:
     mem_limit: 512M
 
   discovery-server:
-    image: springcommunity/spring-petclinic-discovery-server
+    image: springcommunity/spring-petclinic-discovery-server:${SPRING_VERSION}
     container_name: discovery-server
     mem_limit: 512M
     depends_on:
@@ -20,7 +20,7 @@ services:
     entrypoint: ["./dockerize","-wait=tcp://config-server:8888","-timeout=60s","--","java", "org.springframework.boot.loader.JarLauncher"]
 
   customers-service:
-    image: springcommunity/spring-petclinic-customers-service
+    image: springcommunity/spring-petclinic-customers-service:${SPRING_VERSION}
     container_name: customers-service
     volumes:
      - ${SCRIPTPATH}/easeagent:/easeagent-volume
@@ -42,7 +42,7 @@ services:
     - "org.springframework.boot.loader.JarLauncher"
 
   visits-service:
-    image: springcommunity/spring-petclinic-visits-service
+    image: springcommunity/spring-petclinic-visits-service:${SPRING_VERSION}
     container_name: visits-service
     volumes:
      - ${SCRIPTPATH}/easeagent:/easeagent-volume
@@ -64,7 +64,7 @@ services:
     - "org.springframework.boot.loader.JarLauncher"
 
   vets-service:
-    image: springcommunity/spring-petclinic-vets-service
+    image: springcommunity/spring-petclinic-vets-service:${SPRING_VERSION}
     container_name: vets-service
     volumes:
      - ${SCRIPTPATH}/easeagent:/easeagent-volume
@@ -86,7 +86,7 @@ services:
     - "org.springframework.boot.loader.JarLauncher"
 
   api-gateway:
-    image: springcommunity/spring-petclinic-api-gateway
+    image: springcommunity/spring-petclinic-api-gateway:${SPRING_VERSION}
     container_name: api-gateway
     volumes:
      - ${SCRIPTPATH}/easeagent:/easeagent-volume
@@ -121,7 +121,7 @@ services:
       - ${SCRIPTPATH}/tempo/tempo-data:/tmp/tempo
 
   prometheus:
-    image: prom/prometheus:latest
+    image: prom/prometheus:${PROMETHEUS_VERSION}
     container_name: prometheus
     command: [ "--config.file=/etc/prometheus.yaml" ]
     depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]

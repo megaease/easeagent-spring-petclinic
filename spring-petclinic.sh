@@ -4,14 +4,14 @@ set -e
 
 export SCRIPTPATH=$(realpath $(dirname ${BASH_SOURCE[0]}))
 export VERSION=latest
-export SPRING_VERSION=2.5.1
+export SPRING_PETCLINIC_VERSION=${SPRING_PETCLINIC_VERSION:-3.2.0}
 export PROMETHEUS_VERSION=v2.42.0
 
 EASEAGENTDIR=${SCRIPTPATH}/easeagent/downloaded
 EASEAGENTFILE=${EASEAGENTDIR}/easeagent-${VERSION}.jar
 EASEAGENT_INUSE=${EASEAGENTDIR}/easeagent.jar
 
-export EASEAGENT_CONFIG_FILE=${EASEAGENT_CONFIG_FILE:-agent_demo.properties}
+export EASEAGENT_CONFIG_FILE=${EASEAGENT_CONFIG_FILE:-agent_demo_${SPRING_PETCLINIC_VERSION}.properties}
 export PROMETHEUS_CONFIG_FILE=${PROMETHEUS_CONFIG_FILE:-prometheus.yaml}
 
 COMPOSER=${COMPOSER:-docker-compose}
@@ -20,7 +20,7 @@ DOCKERCOMPOSEFILE=${SCRIPTPATH}/${COMPOSER}.yml
 > ${DOCKERCOMPOSEFILE}
 
 function generate_specs() {
-  envsubst < ${SCRIPTPATH}/templ/${COMPOSER}.yml.templ > ${DOCKERCOMPOSEFILE}
+  envsubst < ${SCRIPTPATH}/templ/${COMPOSER}-${SPRING_PETCLINIC_VERSION}.yml.templ > ${DOCKERCOMPOSEFILE}
 }
 
 

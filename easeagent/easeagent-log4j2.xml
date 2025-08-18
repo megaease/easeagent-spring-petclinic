@@ -9,11 +9,11 @@
             <TimeBasedTriggeringPolicy />
         </RollingFile>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d [%10.10t] %5p %10.10c{1} - [%X{traceId}/%X{spanId}] %msg%n"/>
+            <PatternLayout pattern="%d [%10.10t] %5p %class{36}:%L - [%X{traceId}/%X{spanId}] %msg%n"/>
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="info">
+        <Root level="INFO">
             <AppenderRef ref="Console"/>
         </Root>
     </Loggers>

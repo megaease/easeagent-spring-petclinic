@@ -1,0 +1,206 @@
+services:
+  config-server:
+    image: springcommunity/spring-petclinic-config-server:3.2.0
+    container_name: config-server
+    volumes:
+    - ${SCRIPTPATH}/spring-petclinic-microservices-config:/git-repo
+    environment:
+      - GIT_REPO=/git-repo
+    healthcheck:
+      test: ["CMD", "curl", "-I", "http://config-server:8888"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  discovery-server:
+    image: springcommunity/spring-petclinic-discovery-server:3.2.0
+    container_name: discovery-server
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://discovery-server:8761"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    depends_on:
+      config-server:
+        condition: service_healthy
+
+  customers-service:
+    image: springcommunity/spring-petclinic-customers-service:3.2.0
+    container_name: customers-service
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+      config-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_healthy
+    entrypoint: 
+    - "java"
+    - "-Xmx512m"
+    - "-Xms512m"
+    - "-XX:MetaspaceSize=128m"
+    - "-XX:MaxMetaspaceSize=128m"
+    - "-Xss256k"
+    - "-XX:+UseG1GC"
+    - "-XX:+AlwaysPreTouch"
+    - "-XX:-ResizePLAB"
+    - "-XX:+ParallelRefProcEnabled"
+    - "-XX:+ExplicitGCInvokesConcurrent"
+    - "-XX:MaxGCPauseMillis=200"
+    - "-XX:ParallelGCThreads=4"
+    - "-XX:ConcGCThreads=2"
+    - "${JAVA_AGENT_CONFIG}"
+    - "-Deaseagent.config.path=/easeagent-volume/${EASEAGENT_CONFIG_FILE}"
+    - "-Deaseagent.name=customers-service"
+    - "-Deaseagent.server.port=9900"
+    - "-Dspring.sleuth_enabled=false"
+    - "-Dspring.sleuth.web.enabled=false"
+    - "org.springframework.boot.loader.launch.JarLauncher"
+
+  visits-service:
+    image: springcommunity/spring-petclinic-visits-service:3.2.0
+    container_name: visits-service
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+      config-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_healthy
+    entrypoint: 
+    - "java"
+    - "-Xmx512m"
+    - "-Xms512m"
+    - "-XX:MetaspaceSize=128m"
+    - "-XX:MaxMetaspaceSize=128m"
+    - "-Xss256k"
+    - "-XX:+UseG1GC"
+    - "-XX:+AlwaysPreTouch"
+    - "-XX:-ResizePLAB"
+    - "-XX:+ParallelRefProcEnabled"
+    - "-XX:+ExplicitGCInvokesConcurrent"
+    - "-XX:MaxGCPauseMillis=200"
+    - "-XX:ParallelGCThreads=4"
+    - "-XX:ConcGCThreads=2"
+    - "${JAVA_AGENT_CONFIG}"
+    - "-Deaseagent.config.path=/easeagent-volume/${EASEAGENT_CONFIG_FILE}"
+    - "-Deaseagent.name=visits-service"
+    - "-Deaseagent.server.port=9900"
+    - "-Dspring.sleuth_enabled=false"
+    - "-Dspring.sleuth.web.enabled=false"
+    - "org.springframework.boot.loader.launch.JarLauncher"
+
+  vets-service:
+    image: springcommunity/spring-petclinic-vets-service:3.2.0
+    container_name: vets-service
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+      config-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_healthy
+    entrypoint: 
+    - "java"
+    - "-Xmx512m"
+    - "-Xms512m"
+    - "-XX:MetaspaceSize=128m"
+    - "-XX:MaxMetaspaceSize=128m"
+    - "-Xss256k"
+    - "-XX:+UseG1GC"
+    - "-XX:+AlwaysPreTouch"
+    - "-XX:-ResizePLAB"
+    - "-XX:+ParallelRefProcEnabled"
+    - "-XX:+ExplicitGCInvokesConcurrent"
+    - "-XX:MaxGCPauseMillis=200"
+    - "-XX:ParallelGCThreads=4"
+    - "-XX:ConcGCThreads=2"
+    - "${JAVA_AGENT_CONFIG}"
+    - "-Deaseagent.config.path=/easeagent-volume/${EASEAGENT_CONFIG_FILE}"
+    - "-Deaseagent.name=vets-service"
+    - "-Deaseagent.server.port=9900"
+    - "-Dspring.sleuth_enabled=false"
+    - "-Dspring.sleuth.web.enabled=false"
+    - "org.springframework.boot.loader.launch.JarLauncher"
+
+  api-gateway:
+    image: springcommunity/spring-petclinic-api-gateway:3.2.0
+    container_name: api-gateway
+    volumes:
+     - ${SCRIPTPATH}/easeagent:/easeagent-volume
+    depends_on:
+      config-server:
+        condition: service_healthy
+      discovery-server:
+        condition: service_healthy
+    entrypoint: 
+    - "java"
+    - "-Xmx512m"
+    - "-Xms512m"
+    - "-XX:MetaspaceSize=128m"
+    - "-XX:MaxMetaspaceSize=128m"
+    - "-Xss256k"
+    - "-XX:+UseG1GC"
+    - "-XX:+AlwaysPreTouch"
+    - "-XX:-ResizePLAB"
+    - "-XX:+ParallelRefProcEnabled"
+    - "-XX:+ExplicitGCInvokesConcurrent"
+    - "-XX:MaxGCPauseMillis=200"
+    - "-XX:ParallelGCThreads=4"
+    - "-XX:ConcGCThreads=2"
+    - "${JAVA_AGENT_CONFIG}"
+    - "-Deaseagent.config.path=/easeagent-volume/${EASEAGENT_CONFIG_FILE}"
+    - "-Deaseagent.name=api-service"
+    - "-Deaseagent.log.conf=/easeagent-volume/easeagent-log4j2.xml"
+    - "-Deaseagent.server.port=9900"
+    - "-Dspring.sleuth_enabled=false"
+    - "-Dspring.sleuth.web.enabled=false"
+    - "org.springframework.boot.loader.launch.JarLauncher"
+    ports:
+      - "8080:8080"
+
+  tempo:
+    image: grafana/tempo:main-285a25a-amd64
+    container_name: tempo
+    command: [ "-search.enabled=true", "-config.file=/etc/tempo.yaml" ]
+    depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]
+    volumes:
+      - ${SCRIPTPATH}/tempo/tempo-local.yaml:/etc/tempo.yaml
+      - ${SCRIPTPATH}/tempo/overrides.yaml:/etc/overrides.yaml
+      - ${SCRIPTPATH}/tempo/tempo-data:/tmp/tempo
+
+  prometheus:
+    image: prom/prometheus:${PROMETHEUS_VERSION}
+    container_name: prometheus
+    command: [ "--config.file=/etc/prometheus.yaml" ]
+    depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]
+    volumes:
+      - ${SCRIPTPATH}/prometheus/${PROMETHEUS_CONFIG_FILE}:/etc/prometheus.yaml
+
+  grafana:
+    image: grafana/grafana:main   # track main as search is under active development
+    container_name: grafana
+    depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]
+    volumes:
+      - ${SCRIPTPATH}/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ${SCRIPTPATH}/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+    ports:
+      - "3000:3000"
+
+  loads:
+    image: nicolaka/netshoot
+    container_name: loads
+    mem_limit: 128M
+    depends_on: ["api-gateway", "customers-service", "vets-service", "visits-service"]
+    volumes:
+      - ${SCRIPTPATH}/easeagent/loads.sh:/opt/easeagent/loads.sh
+    entrypoint: 
+    - "/bin/bash"
+    - "-c"
+    - "/opt/easeagent/loads.sh"
+ 
+

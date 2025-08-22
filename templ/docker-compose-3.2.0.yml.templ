@@ -11,6 +11,7 @@ services:
       retries: 10
     entrypoint:
     - "java"
+    - "-Dspring.profiles.active=native"
     - "-DGIT_REPO=/git-repo"
     - "org.springframework.boot.loader.launch.JarLauncher"
 

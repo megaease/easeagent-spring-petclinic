@@ -4,13 +4,15 @@ services:
     container_name: config-server
     volumes:
     - ${SCRIPTPATH}/spring-petclinic-microservices-config:/git-repo
-    environment:
-      - GIT_REPO=/git-repo
     healthcheck:
       test: ["CMD", "curl", "-I", "http://config-server:8888"]
       interval: 5s
       timeout: 5s
       retries: 10
+    entrypoint:
+    - "java"
+    - "-DGIT_REPO=/git-repo"
+    - "org.springframework.boot.loader.launch.JarLauncher"
 
   discovery-server:
     image: springcommunity/spring-petclinic-discovery-server:3.2.0

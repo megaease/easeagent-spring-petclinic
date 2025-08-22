@@ -6,6 +6,7 @@ export SCRIPTPATH=$(realpath $(dirname ${BASH_SOURCE[0]}))
 export VERSION=latest
 export SPRING_PETCLINIC_VERSION=${SPRING_PETCLINIC_VERSION:-3.2.0}
 export PROMETHEUS_VERSION=v2.42.0
+export SPRING_PETCLINIC_MICROSERVICES_CONFIG_BRANCH=${SPRING_PETCLINIC_MICROSERVICES_CONFIG_BRANCH:-7126666fccacb248e6725f7ad8537eee3b9cd805}
 
 EASEAGENTDIR=${SCRIPTPATH}/easeagent/downloaded
 EASEAGENTFILE=${EASEAGENTDIR}/easeagent-${VERSION}.jar
@@ -21,6 +22,13 @@ DOCKERCOMPOSEFILE=${SCRIPTPATH}/${COMPOSER}.yml
 
 function generate_specs() {
   envsubst < ${SCRIPTPATH}/templ/${COMPOSER}-${SPRING_PETCLINIC_VERSION}.yml.templ > ${DOCKERCOMPOSEFILE}
+}
+
+function init_spring_configs() {
+  old_dir=$(pwd)
+  cd ${SCRIPTPATH}/spring-petclinic-microservices-config
+  git checkout $SPRING_PETCLINIC_MICROSERVICES_CONFIG_BRANCH
+  cd $old_dir
 }
 
 
@@ -50,6 +58,7 @@ function prepare() {
 
 
 function start() {
+  init_spring_configs
   prepare
   generate_specs
   docker-compose -f ${DOCKERCOMPOSEFILE} up -d
